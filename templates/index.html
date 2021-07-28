@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <title>Charts</title>
+ <meta charset="utf-8">
+ <meta http-equiv="refresh" content="60">
+ {% load static %}
+ <link rel="icon" type="image/png" size="16x16" href="{% static 'img/icon.png' %}">
+ <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+ <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+ <link rel="stylesheet" href="{% static 'css/charts/Chart.css' %}">
+ <link rel="stylesheet" href="{% static 'css/charts/Chart.min.css' %}">
+ <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+ <script src="{% static 'js/popper.min.js' %}"></script>
+ <script src="{% static 'js/bootstrap.min.js' %}"></script>
+ <script src="{% static 'js/charts/Chart.min.js' %}"></script>
+ <script src="{% static 'js/charts/Chart.bundle.js' %}"></script>
+ <script src="{% static 'js/charts/Chart.bundle.min.js' %}"></script>
+ <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+<div class="container" id="container1">
+ <div class="input-group">
+  <a class="btn btn-outline-light" href="http://127.0.0.1:8000/today" role="button" style="margin-left: .3rem;">Today</a>
+  <a class="btn btn-outline-light" href="http://127.0.0.1:8000/yesterday" role="button" style="margin-left: .3rem;">Yesterday</a>
+  <a class="btn btn-outline-light" href="http://127.0.0.1:8000/lastweek" role="button" style="margin-left: .3rem;">Last Week</a>
+  <a class="btn btn-outline-light" href="http://127.0.0.1:8000/lastmonth" role="button" style="margin-left: .3rem;">Last Month</a>
+  <a class="btn btn-outline-light" href="http://127.0.0.1:8000/alltime" role="button" style="margin-left: .3rem;">All Time</a>
+  <button class="btn btn-outline-light" type="button" onclick='get_time_range(this);' style="margin-left: .3rem;">Customized</button>
+  <input type="date" class="form-control rounded text-center" id="StartDatePicker" style="color:black; margin-left: .3rem;">
+  <input type="date" class="form-control rounded text-center" id="EndDatePicker" style="color:black; margin-left: .3rem; margin-right: .3rem;">
+ </div>
+</div>
+<div class="parent">
+ <div class="div1"> 
+  <div class="widget">
+   <div class="box">
+    <div class="percent">
+     <svg class="svg">
+      <circle cy="70" cx="70" r="70"></circle>
+      <circle cy="70" cx="70" r="70" id="widget1_circle"></circle>
+     </svg>
+     <div class="number">
+      <h2>{{LT}}<span>°C</span></h2>
+     </div>
+    </div>
+    <h2 class="text"><i class="fas fa-thermometer-half" style="margin-right: 0.5rem;"></i>Temperature</h2>
+   </div>
+  </div>
+ </div>
+ <div class="div2"> 
+  <div class="widget">
+   <div class="box">
+    <div class="percent">
+     <svg class="svg">
+      <circle cy="70" cx="70" r="70"></circle>
+      <circle cy="70" cx="70" r="70" id="widget2_circle"></circle>
+     </svg>
+     <div class="number">
+      <h2>{{LH}}<span>%</span></h2>
+     </div>
+    </div>
+    <h2 class="text"><i class="fas fa-humidity" style="margin-right: 0.5rem;"></i>Humidity</h2>
+   </div>
+  </div>
+ </div>
+ <div class="div3"> 
+  <div class="widget">
+   <div class="box">
+    <div class="percent">
+     <svg class="svg">
+      <circle cy="70" cx="70" r="70"></circle>
+      <circle cy="70" cx="70" r="70" id="widget3_circle"></circle>
+     </svg>
+     <div class="number">
+      <h2>{{LWS}}<span>Km/h</span></h2>
+     </div>
+    </div>
+    <h2 class="text"><i class="fas fa-wind" style="margin-right: 0.5rem;"></i>Wind Speed</h2>
+   </div>
+  </div>
+ </div>
+ <div class="div4"> 
+  <div class="widget">
+   <div class="box">
+    <div class="percent">
+     <svg class="svg">
+      <circle cy="70" cx="70" r="70"></circle>
+      <circle cy="70" cx="70" r="70" id="widget4_circle"></circle>
+     </svg>
+     <div class="number">
+      <h2>{{LMWG}}<span>Km/h</span></h2>
+     </div>
+    </div>
+    <h2 class="text"><i class="fas fa-wind" style="margin-right: 0.5rem;"></i>Max Wind Gust</h2>
+   </div>
+  </div>
+ </div> 
+ <div class="div5"> 
+  <div class="widget">
+   <div class="box">
+    <div class="percent">
+     <svg class="svg">
+      <circle cy="70" cx="70" r="70"></circle>
+      <circle cy="70" cx="70" r="70" id="widget5_circle"></circle>
+     </svg>
+     <div class="number">
+      <h4 id="header_sr">{{LSR}}<span>W/m<sup>2</sup></span></h4>
+     </div>
+    </div>
+    <h2 class="text"><i class="fas fa-sun" style="margin-right: 0.5rem;"></i>Solar Radiation</h2>
+   </div>
+  </div>
+ </div>
+ <div class="div6"> 
+  <div class="widget">
+   <div class="box">
+    <div class="percent">
+     <svg class="svg">
+      <circle cy="70" cx="70" r="70"></circle>
+      <circle cy="70" cx="70" r="70" id="widget6_circle"></circle>
+     </svg>
+     <div class="number">
+      <h2>{{LPR}}<span>mm</span></h2>
+     </div>
+    </div>
+    <h2 class="text"><i class="far fa-cloud-showers" style="margin-right: 0.5rem;"></i>Precipitation</h2>
+   </div>
+  </div>
+ </div>
+</div>
+<div class="row" id="row_id">
+ <div class="col" id="col_id">
+  <div class="card" id="card_id">
+   <div class="card-body" id="card_body_id">
+    <canvas id="LCTEMP"></canvas>
+   </div>
+  </div>
+ </div>
+ <div class="col" id="col_id">
+  <div class="card" id="card_id">
+   <div class="card-body" id="card_body_id">
+    <canvas id="LCH"></canvas>
+   </div>
+  </div>
+ </div>
+ <div class="col" id="col_id">
+  <div class="card" id="card_id">
+   <div class="card-body" id="card_body_id">
+    <canvas id="LCWS"></canvas>
+   </div>
+  </div>
+ </div>
+</div>
+<div class="row" id="row_id">
+ <div class="col" id="col_id">
+  <div class="card" id="card_id">
+   <div class="card-body" id="card_body_id">
+    <canvas id="LCMWG"></canvas>
+   </div>
+  </div>
+ </div>
+ <div class="col" id="col_id">
+  <div class="card" id="card_id">
+   <div class="card-body" id="card_body_id">
+    <canvas id="LCSR"></canvas>
+   </div>
+  </div>
+ </div>
+ <div class="col" id="col_id">
+  <div class="card" id="card_id">
+   <div class="card-body" id="card_body_id">
+    <canvas id="LCPR"></canvas>
+   </div>
+  </div>
+ </div>
+</div>
+<div class="container" id="container2">   
+ <a class="btn btn-outline-light" href="http://127.0.0.1:8000/download" role="button"><i class="fas fa-file-csv" style="margin-right: 0.5rem;"></i>Download</a>
+</div>
+</body>
+
+<script>
+ const LCT = document.getElementById("LCTEMP");
+ var Chart1 = new Chart(LCT, {
+  type: 'line',
+  data: {
+         labels: [{% for l in Data %}'{{l.Time}}',{% endfor %}], 
+         datasets: [{
+                     label: 'Temperature (°C)',
+                     data: [{% for l in Data %}'{{l.Temperature}}',{% endfor %}],
+                     pointBorderColor: "#fff",
+                     pointStyle: "rect",
+                     pointBackgroundColor: "#fff",
+                     borderColor: "#fff",
+                     pointBorderWidth: 0.5,
+                     borderWidth: 1,
+                     fill: false             
+         }]
+        },
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero: true,
+                  suggestedMin: 0,
+                  suggestedMax: 60,
+                  stepSize: 15
+              }
+          }]
+      }
+  }
+ });
+</script>
+
+<script>
+ const LCH = document.getElementById("LCH");
+ var Chart2 = new Chart(LCH, {
+  type: 'line',
+  data: {
+         labels: [{% for l in Data %}'{{l.Time}}',{% endfor %}], 
+         datasets: [{
+                     label: 'Air Humidity (%)',
+                     data: [{% for l in Data %}'{{l.Humidity}}',{% endfor %}],
+                     pointBorderColor: "#fff",
+                     pointStyle: "rect",
+                     pointBackgroundColor: "#fff",
+                     borderColor: "#fff",
+                     pointBorderWidth: 0.5,
+                     borderWidth: 1,
+                     fill: false
+         }]
+        },
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero: true,
+                  suggestedMin: 0,
+                  suggestedMax: 100,
+                  stepSize: 20
+              }
+          }]
+      }
+  }
+ });
+</script>
+
+<script>
+ const LCWS = document.getElementById("LCWS");
+ var Chart3 = new Chart(LCWS, {
+  type: 'line',
+  data: {
+         labels: [{% for l in Data %}'{{l.Time}}',{% endfor %}], 
+         datasets: [{
+                     label: 'Wind Speed (Km/h)',
+                     data: [{% for l in Data %}'{{l.Wind_Speed}}',{% endfor %}],
+                     pointBorderColor: "#fff",
+                     pointStyle: "rect",
+                     pointBackgroundColor: "#fff",
+                     borderColor: "#fff",
+                     pointBorderWidth: 0.5,
+                     borderWidth: 1,
+                     fill: false
+         }]
+        },
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero: true,
+                  suggestedMin: 0,
+                  suggestedMax: 10,
+                  stepSize: 2
+              }
+          }]
+      }
+  }
+ });
+</script>
+
+<script>
+ const LCMWG = document.getElementById("LCMWG");
+ var Chart4 = new Chart(LCMWG, {
+  type: 'line',
+  data: {
+         labels: [{% for l in Data %}'{{l.Time}}',{% endfor %}], 
+         datasets: [{
+                     label: 'Max Wind Gust (Km/h)',
+                     data: [{% for l in Data %}'{{l.Max_Wind_Gust}}',{% endfor %}],
+                     pointBorderColor: "#fff",
+                     pointStyle: "rect",
+                     pointBackgroundColor: "#fff",
+                     borderColor: "#fff",
+                     pointBorderWidth: 0.5,
+                     borderWidth: 1,
+                     fill: false
+         }]
+        },
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero: true,
+                  suggestedMin: 0,
+                  suggestedMax: 25,
+                  stepSize: 5
+              }
+          }]
+      }
+  }
+ });
+</script>
+
+<script>
+ const LCSR = document.getElementById("LCSR");
+ var Chart5 = new Chart(LCSR, {
+  type: 'line',
+  data: {
+         labels: [{% for l in Data %}'{{l.Time}}',{% endfor %}], 
+         datasets: [{
+                     label: 'Solar Radiation (W/m2)',
+                     data: [{% for l in Data %}'{{l.Solar_Radiation}}',{% endfor %}],
+                     pointBorderColor: "#fff",
+                     pointStyle: "rect",
+                     pointBackgroundColor: "#fff",
+                     borderColor: "#fff",
+                     pointBorderWidth: 0.5,
+                     borderWidth: 1,
+                     fill: false
+         }]
+        },
+  options: {
+      scales: {
+          yAxes: [{
+              ticks: {
+                  beginAtZero: true,
+                  suggestedMin: 0,
+                  suggestedMax: 1200,
+                  stepSize: 300             
+              }
+          }]
+      }
+  }
+ });
+</script>
+
+<script>
+ const LCPR = document.getElementById("LCPR");
+ var Chart5 = new Chart(LCPR, {
+  type: 'line',
+  data: {
+         labels: [{% for l in Data %}'{{l.Time}}',{% endfor %}], 
+         datasets: [{
+                     label: 'Precipitation (mm)',
+                     data: [{% for l in Data %}'{{l.Precipitation}}',{% endfor %}],
+                     pointBorderColor: "#fff",
+                     pointStyle: "rect",
+                     pointBackgroundColor: "#fff",
+                     borderColor: "#fff",
+                     pointBorderWidth: 0.5,
+                     borderWidth: 1,
+                     fill: false
+         }]
+        },
+  options: {
+      scales: {
+         yAxes: [{
+            ticks: {
+                     beginAtZero: true,
+                     suggestedMin: 0,
+                     suggestedMax: 10,
+                     stepSize: 2             
+            }
+         }]
+     }
+  }
+ });
+</script>
+
+<script>
+ $(document).ready(function(){
+  $("#widget1_circle").css({"stroke-dashoffset": "calc(440 - (440 * " + {{LT}} + ") / 100)"});
+  $("#widget2_circle").css({"stroke-dashoffset": "calc(440 - (440 * " + {{LH}} + ") / 100)"});
+  $("#widget3_circle").css({"stroke-dashoffset": "calc(440 - (440 * " + {{LWS}} + ") / 100)"});
+  $("#widget4_circle").css({"stroke-dashoffset": "calc(440 - (440 * " + {{LMWG}} + ") / 100)"});
+  $("#widget5_circle").css({"stroke-dashoffset": "calc(440 - (440 * " + {{LSR}} + ") / 100)"});
+  $("#widget6_circle").css({"stroke-dashoffset": "calc(440 - (440 * " + {{LPR}} + ") / 100)"});
+ })
+</script>
+
+<script>
+ function get_time_range(element){
+  SD = $("#StartDatePicker").val(); 
+  ED = $("#EndDatePicker").val();
+  if ( SD.length != 0 && ED.length != 0 ) {
+   url = "/custom?startdate="+SD+"&enddate="+ED;
+   location.replace(url);
+  }
+ }
+</script>
+</html>
