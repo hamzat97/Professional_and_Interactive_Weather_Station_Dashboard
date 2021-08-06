@@ -1,4 +1,4 @@
-## Professional_and_Interactive_Weather_Station_Dashboard_using_Django
+## Professional_and_Interactive_Weather_Station_Dashboard
 Climate information has endless uses today, and climate monitoring helps provide users with the information they need to plan their actions more effectively. This work presents a professional and intercative dashboard for monitoring and real-time visualization of measurements made by a weather station and downloading of meteorological data in CSV format (daily, weekly, monthly, etc.). This dashboard was developed using Django framework.
 
 ### How to use this dashboard ?
